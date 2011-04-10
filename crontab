@@ -1,0 +1,1 @@
+*/1 * * * * wget -O /dev/null -q http://localhost/runz/system/check
