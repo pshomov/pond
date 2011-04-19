@@ -19,7 +19,6 @@ def accounts():
     sudo("useradd -d /home/queue -m queue -p '"+passwd+"' -r -G ssh,sudo -s /bin/bash")
     sudo("mkdir -p /home/queue/.ssh")
     put("queue_id.pub", "/home/queue/.ssh/authorized_keys", use_sudo=True)
-    env.user = "queue"
 
 def setup():
     if not contains("/etc/apt/sources.list", "rabbitmq"):
