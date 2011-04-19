@@ -14,7 +14,7 @@ def accounts():
     sudo("apt-get -y install makepasswd")
     passwd = run("echo queue | makepasswd --clearfrom=- --crypt-md5 |awk '{ print $2 }'")
     env.warn_only = True
-    sudo("userdel -f -r queue", )
+    sudo("userdel -f -r queue")
     env.warn_only = False
     sudo("useradd -d /home/queue -m queue -p '"+passwd+"' -r -G ssh,sudo -s /bin/bash")
     sudo("mkdir -p /home/queue/.ssh")
