@@ -17,23 +17,29 @@ def accounts():
 
 def setup():
     sudo("apt-get update")
-    sudo("apt-get -y install git-core curl ruby-full")
+    sudo("apt-get -y install git-core curl ruby-full p7zip-full")
     
 def install_dotnet():
     mono_version = "2.10.1"
     libgdi_version = "2.10"
-    # install_mono(mono_version, libgdi_version)
+    install_mono(mono_version)
     install_nunit(mono_version)
     
-def install_mono(version, libgdi_version):
+def install_mono(version):
+    put("bins/mono-%s.7z" % version)
+    run("rm -rdf mono-%s" % version)
+    run("7z x mono-%s.7z" % version)
+    sudo("rm -rdf /opt/mono-%s && mv mono-%s /opt" % (version, version))
+    _generate_mono_wrapper_script(version)
+        
+def build_mono(version, libgdi_version):
         
     sudo("apt-get -y install build-essential autoconf automake bison libcairo2-dev libpango1.0-dev libfreetype6-dev libexif-dev libjpeg62-dev libtiff4-dev libgif-dev zlib1g-dev")
-    with process_erb("mono.erb", {'MONO_VERSION' : version}) as f:
-        put(f.name, "/usr/local/bin/mono-%s" % version, use_sudo = True)
-    sudo("chmod +x /usr/local/bin/mono-%s" % version)
+    
     with process_erb("compile_script.sh.erb", {'MONO_VERSION' : version}) as f:
         put(f.name, "compile_script.sh")
     run("chmod +x compile_script.sh && ./compile_script.sh")
+    _generate_mono_wrapper_script(version)
     
     run("wget http://ftp.novell.com/pub/mono/sources/mono/mono-%s.tar.bz2" % version)
     run("tar xjf mono-%s.tar.bz2" % version)
@@ -47,6 +53,11 @@ def install_mono(version, libgdi_version):
     with cd("mono-%s" % version):
         run("./configure --prefix=/opt/mono-%s && make" % version)
         sudo("make install")
+
+def _generate_mono_wrapper_script(version):
+    with process_erb("mono.erb", {'MONO_VERSION' : version}) as f:
+        put(f.name, "/usr/local/bin/mono-%s" % version, use_sudo = True)
+    sudo("chmod +x /usr/local/bin/mono-%s" % version)
 
 def install_nunit(version):
     mono_runz_addons = "/opt/mono-%s/runz" % version
