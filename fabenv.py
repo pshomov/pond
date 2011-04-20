@@ -9,6 +9,6 @@ env.roledefs = {
     'web': [testbee],
     'queue': [dev_queue],
     'loadbalancer' : bee1,
-    'agents' : [bee1,bee2],
+    'agents' : [test_host],
     'event_handler' : [bee1,bee2]
 }

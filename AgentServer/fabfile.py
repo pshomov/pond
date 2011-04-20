@@ -10,6 +10,7 @@ from fabric.contrib.files import contains,append
 from fabenv import env
 from fabric.operations import sudo
 import fabutils
+import tempfile
 
 def accounts():
     fabutils._create_account(user = "agent", passwd = "agent", public_key="agent_id.pub")
@@ -22,12 +23,13 @@ def install_dotnet():
     install_mono("2.10.1", "2.10")
     
 def install_mono(version, libgdi_version):
-    process_erb("mono.erb", {'MONO_VERSION' : version})
+        
     sudo("apt-get -y install build-essential autoconf automake bison libcairo2-dev libpango1.0-dev libfreetype6-dev libexif-dev libjpeg62-dev libtiff4-dev libgif-dev zlib1g-dev")
-    put("mono", "/usr/local/bin/mono-%s" % version, use_sudo = True)
+    with process_erb("mono.erb", {'MONO_VERSION' : version}) as f:
+        put(f.name, "/usr/local/bin/mono-%s" % version, use_sudo = True)
     sudo("chmod +x /usr/local/bin/mono-%s" % version)
-    process_erb("compile_script.sh.erb", {'MONO_VERSION' : version})
-    put("compile_script.sh")
+    with process_erb("compile_script.sh.erb", {'MONO_VERSION' : version}) as f:
+        put(f.name, "compile_script.sh")
     run("chmod +x compile_script.sh && ./compile_script.sh")
     
     run("wget http://ftp.novell.com/pub/mono/sources/mono/mono-%s.tar.bz2" % version)
@@ -48,4 +50,6 @@ def process_erb(file, kwargs):
     for key,value in kwargs.iteritems():
             os.environ[key] = value
 
-    local("erb %s > %s" % (file, file[:-4]))
+    tempf = tempfile.NamedTemporaryFile()
+    local("erb %s > %s" % (file, tempf.name))
+    return tempf
