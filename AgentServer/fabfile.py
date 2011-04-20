@@ -20,7 +20,10 @@ def setup():
     sudo("apt-get -y install git-core curl ruby-full")
     
 def install_dotnet():
-    install_mono("2.10.1", "2.10")
+    mono_version = "2.10.1"
+    libgdi_version = "2.10"
+    # install_mono(mono_version, libgdi_version)
+    install_nunit(mono_version)
     
 def install_mono(version, libgdi_version):
         
@@ -44,6 +47,12 @@ def install_mono(version, libgdi_version):
     with cd("mono-%s" % version):
         run("./configure --prefix=/opt/mono-%s && make" % version)
         sudo("make install")
+
+def install_nunit(version):
+    mono_runz_addons = "/opt/mono-%s/runz" % version
+    sudo("mkdir -p %s/bin" % mono_runz_addons)
+    put("bins/NUnit", mono_runz_addons, mirror_local_mode=True, use_sudo=True)
+    put("nunit", "%s/bin" % mono_runz_addons, mirror_local_mode=True, use_sudo=True)
 
 def process_erb(file, kwargs):
 
