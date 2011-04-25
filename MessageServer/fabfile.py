@@ -20,7 +20,6 @@ def setup():
         run("wget http://www.rabbitmq.com/rabbitmq-signing-key-public.asc")
         sudo("apt-key add rabbitmq-signing-key-public.asc")
         
-    sudo("apt-get update")
     sudo("apt-get -y install rabbitmq-server")
     _install_management_console()
 

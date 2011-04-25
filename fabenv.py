@@ -6,7 +6,7 @@ bee1 = '208.115.204.105'
 bee2 = '69.162.107.106'
 testbee = 'testbee1.runzhq.com'
 env.roledefs = {
-    'web': [testbee],
+    'web': [test_host],
     'queue': [dev_queue],
     'loadbalancer' : bee1,
     'agents' : [test_host],
