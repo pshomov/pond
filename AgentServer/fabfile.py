@@ -11,15 +11,20 @@ from fabenv import env
 from fabric.operations import sudo
 import fabutils
 
+mono_version = "2.10.1"
+libgdi_version = "2.10"
+
 def accounts():
     fabutils._create_account(user = "agent", passwd = "agent", public_key="agent_id.pub")
 
 def setup():
     sudo("apt-get -y install git-core curl ruby-full p7zip-full")
+    with fabutils.process_erb("runz-agent.sh.erb", {"MONO_VERSION" : mono_version}) as f:
+        put(f.name, "/home/agent/runz-agent.sh", use_sudo=True)
+        sudo("chmod +x /home/agent/runz-agent.sh")
+    
     
 def install_dotnet():
-    mono_version = "2.10.1"
-    libgdi_version = "2.10"
     fabutils.install_mono(mono_version)
     install_nunit(mono_version)
         
