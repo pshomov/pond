@@ -28,7 +28,7 @@ def install_nginx():
     sudo("apt-get -y install nginx")
     if exists("/etc/init.d/apache2"):
         sudo("/etc/init.d/apache2 stop")
-        sudo("update-rc.d apache disable")
+        sudo("update-rc.d apache2 disable")
     sudo("update-rc.d nginx enable")
     put("default","/etc/nginx/sites-enabled/default", use_sudo=True)
     sudo("/etc/init.d/nginx restart")
