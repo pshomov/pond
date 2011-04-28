@@ -6,7 +6,7 @@ sys.path[0:0] = [base_folder]
 
 from fabric.api import *
 from fabric.contrib.console import confirm
-from fabric.contrib.files import exists
+from fabric.contrib.files import exists,contains,append
 from fabenv import env
 from fabric.operations import sudo
 import fabutils
@@ -18,6 +18,11 @@ libgdi_version = "2.10"
 
 def accounts():
     fabutils._create_account(user = "web", passwd = "web", public_key="web_id.pub")
+    
+def setup():
+    if not contains("/etc/environment", "RUNZ_RABBITMQ_SERVER"):
+        append("/etc/environment", "RUNZ_RABBITMQ_SERVER=%s" % env.roledefs['queue'], use_sudo=True)
+    
     
 def install_dotnet_xsp():
     if not exists("/opt/mono-%s" % mono_version):
