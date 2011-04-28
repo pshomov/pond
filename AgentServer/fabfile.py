@@ -22,6 +22,10 @@ def setup():
     with fabutils.process_erb("runz-agent.sh.erb", {"MONO_VERSION" : mono_version}) as f:
         put(f.name, "/home/agent/runz-agent.sh", use_sudo=True)
         sudo("chmod +x /home/agent/runz-agent.sh")
+    if not contains("/etc/environment", "RUNZ_RABBITMQ_SERVER"):
+        append("/etc/environment", "RUNZ_RABBITMQ_SERVER=%s" % env.roledefs['queue'], use_sudo=True)
+        
+        
     
     
 def install_dotnet():
