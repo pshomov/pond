@@ -29,7 +29,7 @@ case "$1" in
         start)
                 if [ -z "${MONOSERVER_PID}" ]; then
                         echo "starting Runz agent"
-                        mono-<%= @mono_ver %> ${MONOSERVER} &
+                        mono-<%= @mono_ver %> mono ${MONOSERVER} &
                         echo "Runz agent started"
                 else
                         echo "Runz agent is already running"
