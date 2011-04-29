@@ -56,8 +56,10 @@ def _generate_mono_wrapper_script(version):
         put(f.name, "/usr/local/bin/mono-%s" % version, use_sudo = True)
     sudo("chmod +x /usr/local/bin/mono-%s" % version)
 
-def process_erb(file, kwargs):
+def _install(packages):
+    sudo("apt-get -y install "+packages)
 
+def process_erb(file, kwargs):
     for key,value in kwargs.iteritems():
             os.environ[key] = value
 

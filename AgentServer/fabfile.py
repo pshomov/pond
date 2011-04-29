@@ -25,8 +25,19 @@ def setup():
     if not contains("/etc/environment", "RUNZ_RABBITMQ_SERVER"):
         append("/etc/environment", "RUNZ_RABBITMQ_SERVER=%s" % env.roledefs['queue'], use_sudo=True)
         
-        
-    
+def install_ruby_support():
+    put("bins/rubygems-1.7.2.tgz")
+    run("tar -xf rubygems-1.7.2.tgz")
+    with cd("rubygems-1.7.2"):
+        sudo("ruby setup.rb")
+
+    fabutils._install("ruby1.8-dev ruby1.8 ri1.8 rdoc1.8 irb1.8 build-essential")
+    fabutils._install("libreadline-ruby1.8 libruby1.8 libopenssl-ruby")
+    fabutils._install("libxml2 libxml2-dev")
+    fabutils._install("libxslt-ruby1.8 libxslt1-dev")
+    fabutils._install("rake")
+    sudo("gem1.8 install bundler rack")
+    sudo("gem1.8 install therubyracer")
     
 def install_dotnet():
     fabutils.install_mono(mono_version)
