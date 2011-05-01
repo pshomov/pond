@@ -27,7 +27,7 @@ def deploy_web(build_output):
     run("7z x -orunz runz/%s" % WEB_ARCHIVE)
     run("chmod -R 755 runz/web")
 
-    run("~/fastcgi-mono-server4.sh start")
+    fabutils._run_background_process("~/fastcgi-mono-server4.sh start", "web")
 
 def deploy_agent(build_output):
     AGENT_ARCHIVE = "agent.7z"
@@ -44,5 +44,5 @@ def deploy_agent(build_output):
     run("7z x -orunz runz/%s" % AGENT_ARCHIVE)
     run("chmod -R 755 runz/agent")
 
-    run("~/runz-agent.sh start")
+    fabutils._run_background_process("~/runz-agent.sh start", "agent")
 
