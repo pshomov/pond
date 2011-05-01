@@ -58,6 +58,11 @@ def _generate_mono_wrapper_script(version):
 
 def _install(packages):
     sudo("apt-get -y install "+packages)
+    
+def _run_background_process(command, output_prefix):
+    # see http://stackoverflow.com/questions/29142/getting-ssh-to-execute-a-command-in-the-background-on-target-machine
+    run("nohup {command} > ~/{prefix}.out 2> ~/{prefix}.err < /dev/null".format(prefix = output_prefix, command = command))
+    
 
 def process_erb(file, kwargs):
     for key,value in kwargs.iteritems():
