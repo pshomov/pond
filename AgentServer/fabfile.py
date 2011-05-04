@@ -37,7 +37,11 @@ def install_ruby_support():
     fabutils._install("rake")
     sudo("gem1.8 install bundler rack --no-rdoc --no-ri")
     sudo("gem1.8 install therubyracer --no-rdoc --no-ri")
-    
+
+def install_python_support():
+    sudo("apt-get -y install python python-dev python-pip")
+
+
 def install_dotnet():
     fabutils.install_mono(mono_version)
     install_nunit(mono_version)
