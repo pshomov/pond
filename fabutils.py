@@ -1,7 +1,7 @@
 import os
 from fabric.api import *
 from fabric.contrib.console import confirm
-from fabric.contrib.files import contains,append
+from fabric.contrib.files import contains,append,exists
 from fabenv import env
 from fabric.operations import sudo
 import tempfile
@@ -21,12 +21,13 @@ def _create_account(user, passwd, public_key=None):
         put(public_key, "/home/%s/.ssh/authorized_keys" % user, use_sudo=True)
 
 def install_mono(version):
-    sudo("apt-get -y install p7zip-full")
-    put(agent_folder+"/bins/mono-%s.7z" % version)
-    run("rm -rdf mono-%s" % version)
-    run("7z x mono-%s.7z" % version)
-    sudo("rm -rdf /opt/mono-%s && mv mono-%s /opt" % (version, version))
-    _generate_mono_wrapper_script(version)
+    if not exists("/opt/mono-{mono_version}".format(mono_version = version)):
+        sudo("apt-get -y install p7zip-full")
+        put(agent_folder+"/bins/mono-%s.7z" % version)
+        run("rm -rdf mono-%s" % version)
+        run("7z x mono-%s.7z" % version)
+        sudo("rm -rdf /opt/mono-%s && mv mono-%s /opt" % (version, version))
+        _generate_mono_wrapper_script(version)
 
 def build_mono(version, libgdi_version):
 
