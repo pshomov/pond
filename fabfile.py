@@ -11,6 +11,7 @@ def agent_server():
     AgentServer.fabfile.setup()
     AgentServer.fabfile.install_ruby_support()
     AgentServer.fabfile.install_dotnet()
+    AgentServer.fabfile.install_python_support()
 
 @roles('repotracker')
 def repotracker_server():
