@@ -8,7 +8,7 @@ testbee = 'testbee1.runzhq.com'
 env.roledefs = {
     'web': [testbee],
     'queue': dev_queue,
-    'loadbalancer' : bee1,
+    'repotracker' : [testbee],
     'agents' : [bee1,bee2],
     'event_handler' : [bee2]
 }
