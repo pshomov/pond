@@ -1,9 +1,6 @@
 import sys
 import os
 
-base_folder = os.path.normpath(os.path.abspath(os.path.dirname(__file__)))
-sys.path[0:0] = [base_folder+"/.."]
-
 from fabric.api import *
 from fabric.contrib.files import contains,append
 from fabenv import env
@@ -12,6 +9,7 @@ import fabutils
 
 mono_version = "2.10.1"
 libgdi_version = "2.10"
+base_folder = os.path.normpath(os.path.abspath(os.path.dirname(__file__)))
 
 def accounts():
     fabutils._create_account(user = "agent", passwd = "agent", public_key=base_folder+"/agent_id.pub")
@@ -39,7 +37,7 @@ def install_ruby_support():
     sudo("gem1.8 install therubyracer --no-rdoc --no-ri")
     
 def install_dotnet():
-    fabutils.install_mono(mono_version)
+    fabutils.build_mono(mono_version, libgdi_version)
     install_nunit(mono_version)
         
 def install_nunit(version):
