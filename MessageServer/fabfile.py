@@ -1,9 +1,5 @@
 import sys
 import os
-
-base_folder = os.path.normpath(os.path.abspath(os.path.dirname(__file__))+'/..')
-sys.path[0:0] = [base_folder]
-
 from fabric.api import *
 from fabric.contrib.console import confirm
 from fabric.contrib.files import contains,append
@@ -11,8 +7,10 @@ from fabenv import env
 from fabric.operations import sudo
 import fabutils
 
+base_folder = os.path.normpath(os.path.abspath(os.path.dirname(__file__)))
+
 def accounts():
-    fabutils._create_account(user = "queue", passwd = "queue", public_key="queue_id.pub")
+    fabutils._create_account(user = "queue", passwd = "queue", public_key=base_folder+"/queue_id.pub")
 
 def setup():
     if not contains("/etc/apt/sources.list", "rabbitmq"):
