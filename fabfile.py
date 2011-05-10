@@ -3,6 +3,7 @@ from fabric.operations import sudo
 import AgentServer.fabfile
 import WebServer.fabfile
 import RepositoryUpdater.fabfile
+import StorageServer
 import fabenv
 
 @roles('agents')
@@ -28,6 +29,12 @@ def web_server():
     WebServer.fabfile.setup()
     WebServer.fabfile.install_dotnet_xsp()
     WebServer.fabfile.install_nginx()
+
+@roles('storage')
+def storage_server():
+    StorageServer.prepare()
+    StorageServer.install_riak()
+
 
 def _apt_update():
     sudo("apt-get -y update")
