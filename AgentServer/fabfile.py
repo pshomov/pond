@@ -41,7 +41,7 @@ def install_python_support():
 
 
 def install_dotnet():
-    fabutils.build_mono(mono_version, libgdi_version)
+    fabutils.install_mono(mono_version)
     install_nunit(mono_version)
         
 def install_nunit(version):
