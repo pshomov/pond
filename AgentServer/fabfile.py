@@ -7,7 +7,7 @@ from fabenv import env
 from fabric.operations import sudo
 import fabutils
 
-mono_version = "2.10.1"
+mono_version = "2.10.2"
 libgdi_version = "2.10"
 base_folder = os.path.normpath(os.path.abspath(os.path.dirname(__file__)))
 
