@@ -6,7 +6,6 @@ import RepositoryUpdater.fabfile
 import StorageServer
 import fabenv
 
-@roles('agents')
 def agent_server():
     _apt_update()
     AgentServer.fabfile.accounts()
@@ -29,6 +28,10 @@ def web_server():
     WebServer.fabfile.setup()
     WebServer.fabfile.install_dotnet_xsp()
     WebServer.fabfile.install_nginx()
+
+@roles('web')
+def web_server_part2():
+    WebServer.fabfile.python_env()
 
 @roles('storage')
 def storage_server():

@@ -17,14 +17,20 @@ def accounts():
     fabutils._create_account(user = "web", passwd = "web", public_key=base_folder+"/web_id.pub")
     
 def setup():
+    sudo("apt-get -y install python2.6 python-setuptools python-protobuf p7zip-full")
     if not contains("/etc/environment", "RUNZ_RABBITMQ_SERVER"):
         append("/etc/environment", "RUNZ_RABBITMQ_SERVER=%s" % env.roledefs['queue'], use_sudo=True)
     
+def python_env():
+    put(base_folder+"/setup_virtenv.sh")
+    run("chmod +x setup_virtenv.sh")
+    run("./setup_virtenv.sh")    
     
 def install_dotnet_xsp():
-    if not exists("/opt/mono-%s" % mono_version):
-        fabutils.build_mono(mono_version, mono_xsp_version)
-    build_mono_xsp(mono_version, mono_xsp_version)
+    # if not exists("/opt/mono-%s" % mono_version):
+    #     fabutils.build_mono(mono_version, mono_xsp_version)
+    # build_mono_xsp(mono_version, mono_xsp_version)
+    pass
     
 def install_nginx():
     sudo("apt-get -y install nginx")
@@ -32,11 +38,11 @@ def install_nginx():
         sudo("/etc/init.d/apache2 stop")
         sudo("update-rc.d apache2 disable")
     sudo("update-rc.d nginx enable")
-    put(base_folder+"/default","/etc/nginx/sites-enabled/default", use_sudo=True)
+    put(base_folder+"/webz.nginx.conf","/etc/nginx/sites-enabled/default", use_sudo=True)
     sudo("/etc/init.d/nginx restart")
-    with fabutils.process_erb(base_folder+"/fastcgi-mono-server4.sh.erb", {"MONO_VERSION" : mono_version}) as f:
-        put(f.name, "/home/web/fastcgi-mono-server4.sh", use_sudo=True)
-        sudo("chmod +x /home/web/fastcgi-mono-server4.sh")
+    with fabutils.process_erb(base_folder+"/runz-webz.sh.erb", {}) as f:
+        put(f.name, "/home/web/runz-webz.sh", use_sudo=True)
+        sudo("chmod +x /home/web/runz-webz.sh")
     
         
 def build_mono_xsp(mono_version, mono_xsp_version):
