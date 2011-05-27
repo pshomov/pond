@@ -20,6 +20,15 @@ def _create_account(user, passwd, public_key=None):
         sudo("mkdir -p /home/%s/.ssh" % user)
         put(public_key, "/home/%s/.ssh/authorized_keys" % user, use_sudo=True)
 
+def base_linux_configuration():
+    _apt_update()
+    put(os.path.join(__path__[0], "BaseLinux", "sshd_config"), "/etc/ssh", use_sudo=True)
+    if not contains("/etc/environment", "RUNZ_RABBITMQ_SERVER"):
+        append("/etc/environment", "RUNZ_RABBITMQ_SERVER=%s" % env.roledefs['queue'], use_sudo=True)
+    if not contains("/etc/environment", "RUNZ_RIAK_HOST"):
+        append("/etc/environment", "RUNZ_RIAK_HOST=%s" % env.roledefs['storage'], use_sudo=True)
+
+
 def install_mono(version):
     if not exists("/opt/mono-{mono_version}".format(mono_version = version)):
         sudo("apt-get -y install p7zip-full")
@@ -72,3 +81,6 @@ def process_erb(file, kwargs):
     tempf = tempfile.NamedTemporaryFile()
     local("erb %s > %s" % (file, tempf.name))
     return tempf
+
+def _apt_update():
+    sudo("apt-get -y update")

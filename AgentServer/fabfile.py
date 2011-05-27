@@ -19,9 +19,7 @@ def setup():
     with fabutils.process_erb(base_folder+"/runz-agent.sh.erb", {"MONO_VERSION" : mono_version}) as f:
         put(f.name, "/home/agent/runz-agent.sh", use_sudo=True)
         sudo("chmod +x /home/agent/runz-agent.sh")
-    if not contains("/etc/environment", "RUNZ_RABBITMQ_SERVER"):
-        append("/etc/environment", "RUNZ_RABBITMQ_SERVER=%s" % env.roledefs['queue'], use_sudo=True)
-        
+
 def install_ruby_support():
     put(base_folder+"/bins/rubygems-1.7.2.tgz")
     run("tar -xf rubygems-1.7.2.tgz")

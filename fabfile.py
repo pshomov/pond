@@ -4,10 +4,10 @@ import AgentServer.fabfile
 import WebServer.fabfile
 import RepositoryUpdater.fabfile
 import StorageServer
-import fabenv
+from fabutils import base_linux_configuration
 
 def agent_server():
-    _apt_update()
+    base_linux_configuration()
     AgentServer.fabfile.accounts()
     AgentServer.fabfile.setup()
     AgentServer.fabfile.install_ruby_support()
@@ -16,14 +16,14 @@ def agent_server():
 
 @roles('repotracker')
 def repotracker_server():
-    _apt_update()
+    base_linux_configuration()
     RepositoryUpdater.fabfile.accounts()
     RepositoryUpdater.fabfile.setup()
     RepositoryUpdater.fabfile.install_dotnet()
 
 @roles('web')
 def web_server():
-    _apt_update()
+    base_linux_configuration()
     WebServer.fabfile.accounts()
     WebServer.fabfile.setup()
     WebServer.fabfile.install_dotnet_xsp()
@@ -35,9 +35,8 @@ def web_server_part2():
 
 @roles('storage')
 def storage_server():
+    base_linux_configuration()
     StorageServer.prepare()
     StorageServer.install_riak()
 
 
-def _apt_update():
-    sudo("apt-get -y update")
