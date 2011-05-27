@@ -18,18 +18,13 @@ def accounts():
     
 def setup():
     sudo("apt-get -y install python2.6 python-setuptools python-protobuf p7zip-full")
-    if not contains("/etc/environment", "RUNZ_RABBITMQ_SERVER"):
-        append("/etc/environment", "RUNZ_RABBITMQ_SERVER=%s" % env.roledefs['queue'], use_sudo=True)
-    
+
 def python_env():
     put(base_folder+"/setup_virtenv.sh")
     run("chmod +x setup_virtenv.sh")
     run("./setup_virtenv.sh")    
     
 def install_dotnet_xsp():
-    # if not exists("/opt/mono-%s" % mono_version):
-    #     fabutils.build_mono(mono_version, mono_xsp_version)
-    # build_mono_xsp(mono_version, mono_xsp_version)
     pass
     
 def install_nginx():

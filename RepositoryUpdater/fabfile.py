@@ -21,9 +21,7 @@ def setup():
     with fabutils.process_erb(base_folder+"/runz-repo-tracker.sh.erb", {"MONO_VERSION" : mono_version}) as f:
         put(f.name, "/home/repotracker/runz-repo-tracker.sh", use_sudo=True)
         sudo("chmod +x /home/repotracker/runz-repo-tracker.sh")
-    if not contains("/etc/environment", "RUNZ_RABBITMQ_SERVER"):
-        append("/etc/environment", "RUNZ_RABBITMQ_SERVER=%s" % env.roledefs['queue'], use_sudo=True)
-        
+
 def install_dotnet():
     fabutils.install_mono(mono_version)
         
