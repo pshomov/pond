@@ -3,6 +3,7 @@ import WebServer.fabfile
 import RepositoryUpdater.fabfile
 import StorageServer
 from fabutils import base_linux_configuration
+from images.web import *
 
 def agent_server():
     base_linux_configuration()
