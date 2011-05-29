@@ -3,7 +3,6 @@ import os
 
 from fabric.api import *
 from fabric.contrib.files import contains,append
-from fabenv import env
 from fabric.operations import sudo
 import fabutils
 
