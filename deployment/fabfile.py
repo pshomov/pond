@@ -8,7 +8,6 @@ sys.path[0:0] = [base_folder]
 from fabric.api import *
 from fabric.contrib.console import confirm
 from fabric.contrib.files import exists
-from fabenv import env
 from fabric.operations import sudo
 import fabutils
 
