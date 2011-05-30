@@ -23,10 +23,7 @@ def web_server():
     base_linux_configuration()
     WebServer.fabfile.accounts()
     WebServer.fabfile.setup()
-    WebServer.fabfile.install_dotnet_xsp()
     WebServer.fabfile.install_nginx()
-
-def web_server_part2():
     WebServer.fabfile.python_env()
 
 def storage_server():

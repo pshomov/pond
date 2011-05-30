@@ -16,16 +16,13 @@ def accounts():
 def setup():
     sudo("apt-get -y install python2.6 python-setuptools python-protobuf p7zip-full")
 
-
 def python_env():
-    put(base_folder + "/setup_virtenv.sh")
-    run("chmod +x setup_virtenv.sh")
-    run("./setup_virtenv.sh")
-
-
-def install_dotnet_xsp():
-    pass
-
+    sudo("easy_install -U virtualenv || { echo \"easy_install failed\"; exit 1; }")
+    put(base_folder + "/setup_virtenv.sh", "/home/web", use_sudo=True)
+    with cd("/home/web"):
+        sudo("chmod +x ./setup_virtenv.sh")
+        run("chown web:web ./setup_virtenv.sh")
+        sudo("./setup_virtenv.sh", user="web")
 
 def install_nginx():
     sudo("apt-get -y install nginx")
