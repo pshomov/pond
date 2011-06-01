@@ -1,9 +1,8 @@
 import os
 from fabric.api import *
-from fabric.contrib.files import contains, append, exists
+from fabric.contrib.files import exists
 from fabric.operations import sudo
 import tempfile
-from fabenv import queue, storage
 
 base = os.path.abspath(os.path.dirname(__file__))
 agent_folder = os.path.join(base, 'AgentServer')
@@ -24,11 +23,6 @@ def _create_account(user, passwd, public_key=None):
 def base_linux_configuration():
     _apt_update()
     put(os.path.join(base, "BaseLinux", "sshd_config"), "/etc/ssh", use_sudo=True)
-    if not contains("/etc/environment", "RUNZ_RABBITMQ_SERVER"):
-        append("/etc/environment", "RUNZ_RABBITMQ_SERVER=%s" % queue, use_sudo=True)
-    if not contains("/etc/environment", "RUNZ_RIAK_HOST"):
-        append("/etc/environment", "RUNZ_RIAK_HOST=%s" % storage, use_sudo=True)
-
 
 def install_mono(version):
     if not exists("/opt/mono-{mono_version}".format(mono_version=version)):
