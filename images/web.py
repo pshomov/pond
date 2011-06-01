@@ -1,56 +1,41 @@
-import time
-from fabric.contrib.files import contains, append, sed
-import openstack.compute
-import os
-import fabric.api
+from images.primitives import create_server, store_server_image
 
-def image_web_server():
-    rackspace = get_rackspace_manager()
-    flavour = rackspace.flavors.find(ram=256)
-    images = rackspace.images.find(name="Ubuntu 10.10 (maverick)")
-    server = rackspace.servers.create("img-agent", images, flavour)
-    serverId = server.id
-    rootPass = server.adminPass
-    while server.status != u"ACTIVE":
-        time.sleep(5)
-        server = rackspace.servers.get(serverId)
-        print "status: " + server.status
-        print "progress: " + str(server.progress)
+WEB_IMAGE_NAME = "img-web"
+WEB_SERVER_NAME = "s-web"
+STORE_IMAGE_NAME = "img-store"
+STORE_SERVER_NAME = "s-store"
+QUEUE_IMAGE_NAME = "img-queue"
+QUEUE_SERVER_NAME = "s-queue"
+TEMP_SERVER = "temp-server"
 
-    fabric.api.env.password = rootPass
-    fabric.api.env.user = 'root'
-    fabric.api.env.hosts = [server.public_ip]
+def create_web_server():
+    create_server(TEMP_SERVER)
 
 
-def store_web_server():
-    pass
+def store_web_image():
+    store_server_image(WEB_IMAGE_NAME)
 
+
+def create_store_server():
+    create_server(TEMP_SERVER)
+
+
+def store_store_image():
+    store_server_image(STORE_IMAGE_NAME)
+
+
+def create_queue_server():
+    create_server(TEMP_SERVER)
+
+
+def store_queue_image():
+    store_server_image(QUEUE_IMAGE_NAME)
+
+def spin_queue_server():
+    create_server(QUEUE_SERVER_NAME, QUEUE_IMAGE_NAME)
+
+def spin_store_server():
+    create_server(STORE_SERVER_NAME, STORE_IMAGE_NAME)
 
 def spin_web_server():
-    pass
-
-
-def reconfigure_server():
-    reset_env_variable("RUNZ_RIAK_HOST", get_store_ip())
-    reset_env_variable("RUNZ_RABBITMQ_SERVER", get_queue_ip())
-
-
-def get_rackspace_manager():
-    return openstack.compute.Compute(username=os.environ["RACKSPACE_USERNAME"], apikey=os.environ["RACKSPACE_API_KEY"])
-
-
-def get_queue_ip():
-    rackspace = get_rackspace_manager()
-    return rackspace.servers.find(name="dev-queue").public_ip
-
-
-def get_store_ip():
-    rackspace = get_rackspace_manager()
-    return rackspace.servers.find(name="dev-queue").public_ip
-
-
-def reset_env_variable(variable_name, variable_value):
-    if not contains("/etc/environment", variable_name):
-        append("/etc/environment", "%s=%s" % (variable_name, variable_value), use_sudo=True)
-    else:
-        sed("/etc/environment", "^%s=.*$" % variable_name, "%s=%s" % (variable_name, variable_value), use_sudo=True)
+    create_server(WEB_SERVER_NAME, WEB_IMAGE_NAME)
