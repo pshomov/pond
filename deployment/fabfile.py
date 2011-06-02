@@ -26,7 +26,7 @@ def deploy_web(build_output):
     run("7z x -orunz runz/%s" % WEB_ARCHIVE)
     run("chmod -R 755 runz/webz")
 
-    run("~/runz-webz.sh start")
+#    run("~/runz-webz.sh start")
 
 def deploy_agent(build_output):
     AGENT_ARCHIVE = "agent.7z"
