@@ -1,32 +1,39 @@
 import AgentServer.fabfile
+import MessageServer.fabfile
 import WebServer.fabfile
 import RepositoryUpdater.fabfile
 import StorageServer
-from fabutils import base_linux_configuration
+import fabutils
 from images.web import *
+from deployment.fabfile import *
 
-def agent_server():
-    base_linux_configuration()
+def setup_agent_server():
+    fabutils.base_linux_configuration()
     AgentServer.fabfile.accounts()
     AgentServer.fabfile.setup()
     AgentServer.fabfile.install_ruby_support()
     AgentServer.fabfile.install_dotnet()
     AgentServer.fabfile.install_python_support()
 
-def repotracker_server():
-    base_linux_configuration()
+def setup_repotracker_server():
+    fabutils.base_linux_configuration()
     RepositoryUpdater.fabfile.accounts()
     RepositoryUpdater.fabfile.setup()
     RepositoryUpdater.fabfile.install_dotnet()
 
-def web_server():
-    base_linux_configuration()
+def setup_web_server():
+    fabutils.base_linux_configuration()
     WebServer.fabfile.accounts()
     WebServer.fabfile.setup()
     WebServer.fabfile.install_nginx()
     WebServer.fabfile.python_env()
 
-def storage_server():
-    base_linux_configuration()
+def setup_storage_server():
+    fabutils.base_linux_configuration()
     StorageServer.prepare()
     StorageServer.install_riak()
+
+def setup_queue_server():
+    fabutils.base_linux_configuration()
+    MessageServer.fabfile.accounts()
+    MessageServer.fabfile.setup()
