@@ -28,12 +28,16 @@ def setup_web_server():
     WebServer.fabfile.install_nginx()
     WebServer.fabfile.python_env()
 
-def setup_storage_server():
+def setup_store_server():
     fabutils.base_linux_configuration()
     StorageServer.prepare()
+    StorageServer.accounts()
     StorageServer.install_riak()
 
 def setup_queue_server():
     fabutils.base_linux_configuration()
     MessageServer.fabfile.accounts()
     MessageServer.fabfile.setup()
+
+def start_store_server():
+    StorageServer.start_riak()
