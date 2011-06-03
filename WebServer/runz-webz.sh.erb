@@ -21,7 +21,7 @@ case "$1" in
                         echo "starting Runz webz"
 						cd /home/web/runz/webz/app
 						source /home/web/webz_virtenv/bin/activate
-						nohup ./start.sh > ~/webz.out 2> ~/webz.err < /dev/null
+						gunicorn -b unix:/tmp/gunicorn.sock --log-file=webz.log project:application
                         echo "Runz webz started"
                 else
                         echo "Runz webz is already running"
