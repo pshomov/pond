@@ -50,3 +50,8 @@ def select_last_server():
 
 def cleanup():
     images.primitives.delete_server(TEMP_SERVER)
+
+def reconfigure_server():
+    images.primitives.print_env()
+    images.primitives.reset_env_variable("RUNZ_RIAK_HOST", images.primitives.get_store_ip())
+    images.primitives.reset_env_variable("RUNZ_RABBITMQ_SERVER", images.primitives.get_queue_ip())

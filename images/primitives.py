@@ -59,10 +59,6 @@ def select_server(server_name):
 
 
 
-def reconfigure_server():
-    print_env()
-    reset_env_variable("RUNZ_RIAK_HOST", get_store_ip())
-    reset_env_variable("RUNZ_RABBITMQ_SERVER", get_queue_ip())
 
 
 def get_queue_ip():

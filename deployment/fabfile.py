@@ -1,14 +1,6 @@
-import shutil
 import os
-import sys
-
-base_folder = os.path.normpath(os.path.abspath(os.path.dirname(__file__))+'/..')
-sys.path[0:0] = [base_folder]
-
 from fabric.api import *
-from fabric.contrib.console import confirm
 from fabric.contrib.files import exists
-from fabric.operations import sudo
 import fabutils
 
 def deploy_web(build_output):
@@ -21,12 +13,15 @@ def deploy_web(build_output):
         
     run("mkdir -p runz/webz")
     put(WEB_ARCHIVE, "runz/")
-    run("~/runz-webz.sh stop")
-    
+
     run("7z x -orunz runz/%s" % WEB_ARCHIVE)
     run("chmod -R 755 runz/webz")
 
-#    run("~/runz-webz.sh start")
+def startup_web_server():
+    run("~/runz-webz.sh start")
+
+def shutdown_web_server():
+    run("~/runz-webz.sh stop")
 
 def deploy_agent(build_output):
     AGENT_ARCHIVE = "agent.7z"
