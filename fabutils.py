@@ -5,7 +5,7 @@ from fabric.operations import sudo
 import tempfile
 
 base = os.path.abspath(os.path.dirname(__file__))
-agent_folder = os.path.join(base, 'AgentServer')
+agent_folder = os.path.join(base, 'agent_server')
 
 def _create_account(user, passwd, public_key=None):
     sudo("apt-get -y install makepasswd")
@@ -22,7 +22,7 @@ def _create_account(user, passwd, public_key=None):
 
 def base_linux_configuration():
     _apt_update()
-    put(os.path.join(base, "BaseLinux", "sshd_config"), "/etc/ssh", use_sudo=True)
+    put(os.path.join(base, "base_linux", "sshd_config"), "/etc/ssh", use_sudo=True)
 
 def install_mono(version):
     if not exists("/opt/mono-{mono_version}".format(mono_version=version)):

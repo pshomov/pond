@@ -1,4 +1,4 @@
-import AgentServer.fabfile
+import agent_server.fabfile
 import MessageServer.fabfile
 import WebServer.fabfile
 import RepositoryUpdater.fabfile
