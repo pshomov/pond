@@ -1,8 +1,8 @@
 import agent_server.fabfile
-import MessageServer.fabfile
-import WebServer.fabfile
-import RepositoryUpdater.fabfile
-import StorageServer
+import message_server.fabfile
+import web_server.fabfile
+import repository_updater.fabfile
+import storage_server
 import fabutils
 from images.web import *
 from deployment.fabfile import *
@@ -30,9 +30,9 @@ def setup_web_server():
 
 def setup_store_server():
     fabutils.base_linux_configuration()
-    StorageServer.prepare()
-    StorageServer.accounts()
-    StorageServer.install_riak()
+    storage_server.prepare()
+    storage_server.accounts()
+    storage_server.install_riak()
 
 def setup_queue_server():
     fabutils.base_linux_configuration()
@@ -40,4 +40,4 @@ def setup_queue_server():
     MessageServer.fabfile.setup()
 
 def start_store_server():
-    StorageServer.start_riak()
+    storage_server.start_riak()
