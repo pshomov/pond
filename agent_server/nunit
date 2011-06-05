@@ -1,0 +1,2 @@
+#!/bin/bash
+mono-2.10.1 mono /opt/mono-2.10.1/runz/NUnit/nunit-console.exe "$@"

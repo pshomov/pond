@@ -1,0 +1,11 @@
+#!/bin/bash
+<% @mono_ver =  ENV['MONO_VERSION']%>
+<% @mono_xsp_ver =  ENV['MONO_XSP_VERSION']%>
+
+wget http://ftp.novell.com/pub/mono/sources/xsp/xsp-<%= @mono_xsp_ver %>.tar.bz2
+tar xjf xsp-<%= @mono_xsp_ver %>.tar.bz2
+
+cd xsp-<%= @mono_xsp_ver %>
+mono-<%= @mono_xsp_ver %> ./configure --prefix=/opt/mono-<%= @mono_ver %>
+make
+make install
