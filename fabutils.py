@@ -27,7 +27,7 @@ def base_linux_configuration():
 def install_mono(version):
     if not exists("/opt/mono-{mono_version}".format(mono_version=version)):
         sudo("apt-get -y install p7zip-full")
-        put(agent_folder + "/bins/mono-%s.7z" % version)
+        run("wget -O mono-%s.7z https://s3.amazonaws.com/mono_builds/mono-%s-amd64.7z" % (version, version))
         run("rm -rdf mono-%s" % version)
         run("7z x mono-%s.7z" % version)
         sudo("rm -rdf /opt/mono-%s && mv mono-%s /opt" % (version, version))
