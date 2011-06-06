@@ -17,7 +17,9 @@ def _create_account(user, passwd, public_key=None):
                                                                                                 "passwd": passwd})
     if public_key is not None:
         sudo("mkdir -p /home/%s/.ssh" % user)
-        put(public_key, "/home/%s/.ssh/authorized_keys" % user, use_sudo=True)
+        user_key_path = "/home/%s/.ssh/authorized_keys" % user
+        put(public_key, user_key_path, use_sudo=True)
+        sudo("chmod 600 "+user_key_path)
 
 
 def base_linux_configuration():
