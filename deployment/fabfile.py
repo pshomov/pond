@@ -33,11 +33,14 @@ def deploy_agent(build_output):
 
     run("mkdir -p runz/agent")
     put(AGENT_ARCHIVE, "runz/")
-    run("~/runz-agent.sh stop")
 
     run("7z x -orunz runz/%s" % AGENT_ARCHIVE)
     run("chmod -R 755 runz/agent")
 
+def shutdown_agent_server():
+    run("~/runz-agent.sh stop")
+
+def start_agent_server():
     fabutils._run_background_process("~/runz-agent.sh start", "agent")
 
 def deploy_repotracker(build_output):

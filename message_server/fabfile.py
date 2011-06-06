@@ -31,4 +31,5 @@ def _install_management_console():
     sudo("mv *.ez /usr/lib/rabbitmq/lib/rabbitmq_server-2.4.1/plugins/")
     sudo("/etc/init.d/rabbitmq-server restart")
         
-    
+def start_rabbitmq_server():
+    sudo("/etc/init.d/rabbitmq-server start")
