@@ -17,7 +17,7 @@ def deploy_web(build_output):
     run("7z x -orunz runz/%s" % WEB_ARCHIVE)
     run("chmod -R 755 runz/webz")
 
-def startup_web_server():
+def start_web_server():
     run("~/runz-webz.sh start")
 
 def shutdown_web_server():
