@@ -50,14 +50,6 @@ def start_agent_server():
     fabutils._run_background_process("~/runz-agent.sh start", "agent")
 
 
-def start_repotracker_server():
-    fabutils._run_background_process("~/runz-repo-tracker.sh start", "repotracker")
-
-
-def shutdown_repotracker_server():
-    run("~/runz-repo-tracker.sh stop")
-
-
 def deploy_repotracker(build_output):
     REPOTRACKER_ARCHIVE = "repotracker.7z"
     if os.path.exists(REPOTRACKER_ARCHIVE):
@@ -68,10 +60,14 @@ def deploy_repotracker(build_output):
 
     run("mkdir -p runz/repotracker")
     put(REPOTRACKER_ARCHIVE, "runz/")
-    run("~/runz-repo-tracker.sh stop")
 
     run("7z x -orunz runz/%s" % REPOTRACKER_ARCHIVE)
     run("chmod -R 755 runz/repotracker")
 
+def start_repotracker_server():
     fabutils._run_background_process("~/runz-repo-tracker.sh start", "repotracker")
+
+
+def shutdown_repotracker_server():
+    run("~/runz-repo-tracker.sh stop")
 
