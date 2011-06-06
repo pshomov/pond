@@ -46,6 +46,10 @@ def delete_server(server_name):
     for server in rackspace.servers.findall(name=server_name):
         server.delete()
 
+def delete_all_server():
+    for server in rackspace.servers.list():
+        server.delete()
+
 
 def delete_image(image_name):
     for image in rackspace.images.findall(name=image_name):
@@ -56,9 +60,6 @@ def select_server(server_name):
     fabric.api.env.hosts = [server.public_ip]
     global  current_server
     current_server = server
-
-
-
 
 
 def get_queue_ip():
