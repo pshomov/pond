@@ -1,4 +1,5 @@
 import os
+
 from fabric.api import *
 from fabric.contrib.files import exists
 import fabutils
@@ -17,11 +18,14 @@ def deploy_web(build_output):
     run("7z x -orunz runz/%s" % WEB_ARCHIVE)
     run("chmod -R 755 runz/webz")
 
+
 def start_web_server():
     run("~/runz-webz.sh start")
 
+
 def shutdown_web_server():
     run("~/runz-webz.sh stop")
+
 
 def deploy_agent(build_output):
     AGENT_ARCHIVE = "agent.7z"
@@ -37,11 +41,22 @@ def deploy_agent(build_output):
     run("7z x -orunz runz/%s" % AGENT_ARCHIVE)
     run("chmod -R 755 runz/agent")
 
+
 def shutdown_agent_server():
     run("~/runz-agent.sh stop")
 
+
 def start_agent_server():
     fabutils._run_background_process("~/runz-agent.sh start", "agent")
+
+
+def start_repotracker_server():
+    fabutils._run_background_process("~/runz-repo-tracker.sh start", "repotracker")
+
+
+def shutdown_repotracker_server():
+    run("~/runz-repo-tracker.sh stop")
+
 
 def deploy_repotracker(build_output):
     REPOTRACKER_ARCHIVE = "repotracker.7z"
