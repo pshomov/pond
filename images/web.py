@@ -7,6 +7,8 @@ STORE_SERVER_NAME = "s-store"
 QUEUE_IMAGE_NAME = "img-queue"
 QUEUE_SERVER_NAME = "s-queue"
 TEMP_SERVER = "temp-server"
+AGENT_SERVER_NAME = "s-agent"
+REPOTRACKER_SERVER_NAME = "s-repotracker"
 
 def create_web_server():
     images.primitives.create_server(TEMP_SERVER)
@@ -48,8 +50,29 @@ def select_last_server():
     images.primitives.select_server(TEMP_SERVER)
 
 
+def rename_as_web_server():
+    images.primitives.rename_server(TEMP_SERVER, WEB_SERVER_NAME)
+
+
+def rename_as_queue_server():
+    images.primitives.rename_server(TEMP_SERVER, QUEUE_SERVER_NAME)
+
+
+def rename_as_store_server():
+    images.primitives.rename_server(TEMP_SERVER, STORE_SERVER_NAME)
+
+
+def rename_as_agent_server():
+    images.primitives.rename_server(TEMP_SERVER, AGENT_SERVER_NAME)
+
+
+def rename_as_repotracker_server():
+    images.primitives.rename_server(TEMP_SERVER, REPOTRACKER_SERVER_NAME)
+
+
 def cleanup():
     images.primitives.delete_server(TEMP_SERVER)
+
 
 def reconfigure_server():
     images.primitives.print_env()

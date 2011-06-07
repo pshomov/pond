@@ -61,6 +61,9 @@ def select_server(server_name):
     global  current_server
     current_server = server
 
+def rename_server(server_name, new_server_name):
+    server = rackspace.servers.find(name=server_name)
+    rackspace.servers.update(server, new_server_name)
 
 def get_queue_ip():
     return rackspace.servers.find(name="s-queue").public_ip
