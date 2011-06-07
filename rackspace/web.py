@@ -1,4 +1,4 @@
-import images.primitives
+import rackspace.primitives
 
 WEB_IMAGE_NAME = "img-web"
 WEB_SERVER_NAME = "s-web"
