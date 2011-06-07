@@ -73,6 +73,9 @@ def rename_as_repotracker_server():
 def cleanup():
     images.primitives.delete_server(TEMP_SERVER)
 
+def list_servers():
+    for server in images.primitives.all_servers():
+        print "{name} - {ip}".format(name = server.name, ip = server.publicip)
 
 def reconfigure_server():
     images.primitives.print_env()

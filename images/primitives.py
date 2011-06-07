@@ -85,3 +85,7 @@ def reset_env_variable(variable_name, variable_value):
 
 def print_env():
     print str(fabric.api.env)
+
+
+def all_servers():
+    return rackspace.servers.list()
