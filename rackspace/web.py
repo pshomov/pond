@@ -11,24 +11,12 @@ TEMP_SERVER = "temp-server"
 AGENT_SERVER_NAME = "s-agent"
 REPOTRACKER_SERVER_NAME = "s-repotracker"
 
-def create_web_server():
-    rackspace.primitives.create_server(TEMP_SERVER)
-
-
 def store_web_image():
     rackspace.primitives.store_server_image(WEB_IMAGE_NAME)
 
 
-def create_store_server():
-    rackspace.primitives.create_server(TEMP_SERVER)
-
-
 def store_store_image():
     rackspace.primitives.store_server_image(STORE_IMAGE_NAME)
-
-
-def create_queue_server():
-    rackspace.primitives.create_server(TEMP_SERVER)
 
 
 def store_queue_image():
@@ -47,28 +35,24 @@ def spin_web_server():
     rackspace.primitives.create_server(WEB_SERVER_NAME, WEB_IMAGE_NAME, generate_user=False)
 
 
-def select_last_server():
-    rackspace.primitives.select_server(TEMP_SERVER)
+def rename_as_web_server(server_name):
+    rackspace.primitives.rename_server(server_name, WEB_SERVER_NAME)
 
 
-def rename_as_web_server():
-    rackspace.primitives.rename_server(TEMP_SERVER, WEB_SERVER_NAME)
+def rename_as_queue_server(server_name):
+    rackspace.primitives.rename_server(server_name, QUEUE_SERVER_NAME)
 
 
-def rename_as_queue_server():
-    rackspace.primitives.rename_server(TEMP_SERVER, QUEUE_SERVER_NAME)
+def rename_as_store_server(server_name):
+    rackspace.primitives.rename_server(server_name, STORE_SERVER_NAME)
 
 
-def rename_as_store_server():
-    rackspace.primitives.rename_server(TEMP_SERVER, STORE_SERVER_NAME)
+def rename_as_agent_server(server_name):
+    rackspace.primitives.rename_server(server_name, AGENT_SERVER_NAME)
 
 
-def rename_as_agent_server():
-    rackspace.primitives.rename_server(TEMP_SERVER, AGENT_SERVER_NAME)
-
-
-def rename_as_repotracker_server():
-    rackspace.primitives.rename_server(TEMP_SERVER, REPOTRACKER_SERVER_NAME)
+def rename_as_repotracker_server(server_name):
+    rackspace.primitives.rename_server(server_name, REPOTRACKER_SERVER_NAME)
 
 
 def cleanup():

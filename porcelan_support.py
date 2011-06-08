@@ -1,9 +1,9 @@
-from random import random
+import random
 import string
 import subprocess
 
 def launch(cmd):
-    subprocess.Popen(cmd, shell=True)
+    return subprocess.Popen(cmd, shell=True)
 
 
 def launch_and_wait(cmd):
@@ -12,4 +12,4 @@ def launch_and_wait(cmd):
 
 
 def generate_temp_server_name():
-    'temp'.join(random.choice(string.ascii_uppercase + string.digits) for x in range(5))
+    return 'temp'.join(random.choice(string.ascii_uppercase + string.digits) for x in range(5))
