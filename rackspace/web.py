@@ -1,4 +1,5 @@
 import rackspace.primitives
+from rackspace.primitives import create_server, select_server
 
 WEB_IMAGE_NAME = "img-web"
 WEB_SERVER_NAME = "s-web"
