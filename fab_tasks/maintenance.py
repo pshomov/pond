@@ -1,4 +1,4 @@
 import rackspace.primitives
 
 def delete_all_servers():
-    images.primitives.delete_all_server()
+    rackspace.primitives.delete_all_server()
