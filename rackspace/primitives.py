@@ -46,7 +46,7 @@ def delete_server(server_name):
     for server in rackspace.servers.findall(name=server_name):
         server.delete()
 
-def delete_all_server():
+def delete_all_servers():
     for server in rackspace.servers.list():
         server.delete()
 
