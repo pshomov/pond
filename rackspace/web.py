@@ -1,3 +1,4 @@
+import time
 import rackspace.primitives
 from rackspace.primitives import create_server, select_server
 
@@ -34,23 +35,23 @@ def store_repotracker_image():
 
 
 def spin_queue_server():
-    rackspace.primitives.create_server(QUEUE_SERVER_NAME, QUEUE_IMAGE_NAME)
+    rackspace.primitives.create_server(QUEUE_SERVER_NAME, QUEUE_IMAGE_NAME, generate_user=False)
 
 
 def spin_store_server():
-    rackspace.primitives.create_server(STORE_SERVER_NAME, STORE_IMAGE_NAME)
+    rackspace.primitives.create_server(STORE_SERVER_NAME, STORE_IMAGE_NAME, generate_user=False)
 
 
 def spin_web_server():
-    rackspace.primitives.create_server(WEB_SERVER_NAME, WEB_IMAGE_NAME)
+    rackspace.primitives.create_server(WEB_SERVER_NAME, WEB_IMAGE_NAME, generate_user=False)
 
 
 def spin_agent_server():
-    rackspace.primitives.create_server(AGENT_SERVER_NAME, AGENT_IMAGE_NAME)
+    rackspace.primitives.create_server(AGENT_SERVER_NAME, AGENT_IMAGE_NAME, generate_user=False)
 
 
 def spin_repotracker_server():
-    rackspace.primitives.create_server(REPOTRACKER_SERVER_NAME, REPOTRACKER_IMAGE_NAME)
+    rackspace.primitives.create_server(REPOTRACKER_SERVER_NAME, REPOTRACKER_IMAGE_NAME, generate_user=False)
 
 
 def rename_as_web_server(server_name):
