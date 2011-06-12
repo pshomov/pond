@@ -78,10 +78,10 @@ def get_store_ip():
 def set_environment_in_file(file, environment_line, variable_name):
     if not contains(file, variable_name):
         print "{variable} not found, appending it".format(variable=variable_name)
-        append(file, str(environment_line), use_sudo=True)
+        append(file, "export "+str(environment_line), use_sudo=True)
     else:
         print "{variable} found, replacing it".format(variable=variable_name)
-        sed(file, "^%s=.*$" % variable_name, environment_line, use_sudo=True)
+        sed(file, "%s=.*$" % variable_name, environment_line, use_sudo=True)
 
 
 def reset_env_variable(variable_name, variable_value):
