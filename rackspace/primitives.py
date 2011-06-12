@@ -1,5 +1,6 @@
 import time
 from fabric.contrib.files import contains, append, sed
+from fabric.operations import reboot
 import openstack.compute
 import os
 import fabric.api
@@ -32,6 +33,7 @@ def create_server(server_name, image_name="Ubuntu 10.10 (maverick)", generate_us
 
 
 def store_server_image(image_name):
+    reboot(5)
     image = rackspace.images.create(image_name, current_server.id)
     while image.status != u"ACTIVE":
         time.sleep(5)
@@ -73,15 +75,20 @@ def get_store_ip():
     return rackspace.servers.find(name="s-store").public_ip
 
 
+def set_environment_in_file(file, environment_line, variable_name):
+    if not contains(file, variable_name):
+        print "{variable} not found, appending it".format(variable=variable_name)
+        append(file, str(environment_line), use_sudo=True)
+    else:
+        print "{variable} found, replacing it".format(variable=variable_name)
+        sed(file, "^%s=.*$" % variable_name, environment_line, use_sudo=True)
+
+
 def reset_env_variable(variable_name, variable_value):
     environment_line = '%s=%s' % (variable_name, variable_value)
     print environment_line
-    if not contains("/etc/environment", variable_name):
-        print "{variable} not found, appending it".format(variable=variable_name)
-        append("/etc/environment", str(environment_line), use_sudo=True)
-    else:
-        print "{variable} found, replacing it".format(variable=variable_name)
-        sed("/etc/environment", "^%s=.*$" % variable_name, environment_line, use_sudo=True)
+    set_environment_in_file("/etc/environment", environment_line, variable_name)
+    set_environment_in_file("/etc/profile", environment_line, variable_name)
 
 def print_env():
     print str(fabric.api.env)
