@@ -3,8 +3,8 @@
 echo "Preparing virtual env for app"
 virtualenv --distribute webz_virtenv || { echo "virtualenv failed"; exit 1; }
 source webz_virtenv/bin/activate
-pip install bobo || { echo "installing bobo failed"; exit 1; } 
-pip install gunicorn || { echo "installing gunicorn failed"; exit 1; } 
-pip install riak || { echo "installing riak python client failed"; exit 1; } 
+easy_install -U bobo || { echo "installing bobo failed"; exit 1; }
+easy_install -U gunicorn || { echo "installing gunicorn failed"; exit 1; }
+easy_install -U riak || { echo "installing riak python client failed"; exit 1; }
 deactivate
 echo "Virtual env installed and deactivated"
