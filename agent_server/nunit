@@ -1,2 +1,4 @@
 #!/bin/bash
-mono "`dirname $0`/../NUnit/nunit-console.exe" "$@"
+
+script_dir=`dirname $0`
+mono `realpath $script_dir/../NUnit/nunit-console.exe` "$@"

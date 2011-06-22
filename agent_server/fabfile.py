@@ -42,6 +42,7 @@ def install_dotnet():
     install_nunit(mono_version)
         
 def install_nunit(version):
+    sudo("apt-get -y install realpath")
     mono_runz_addons = "/opt/mono-%s/runz" % version
     sudo("mkdir -p %s/bin" % mono_runz_addons)
     put(base_folder+"/bins/NUnit", mono_runz_addons, mirror_local_mode=True, use_sudo=True)
