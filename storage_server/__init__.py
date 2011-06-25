@@ -25,6 +25,8 @@ def install_riak():
     put(os.path.join(__path__[0], "conf", "vm.args"), "/etc/riak", use_sudo=True)
     
     sudo("update-rc.d riak defaults")
+    start_riak()
+    sudo("curl -s rekon.basho.com | sh")
     
 def start_riak():
     sudo("/etc/init.d/riak start")
