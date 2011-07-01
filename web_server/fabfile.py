@@ -38,10 +38,9 @@ def install_nginx():
         put(f.name, "/etc/nginx/sites-enabled/default", use_sudo=True)
 
     sudo("/etc/init.d/nginx restart")
-    with fabutils.process_erb(base_folder + "/runz-webz.sh.erb", {}) as f:
-        put(f.name, "/home/web/runz-webz.sh", use_sudo=True)
-        sudo("chmod +x /home/web/runz-webz.sh")
-    with fabutils.process_erb(base_folder + "/runz-web.sh.erb", {}) as f:
+    put(base_folder + "/runz-webz.sh", "/home/web/runz-webz.sh", use_sudo=True)
+    sudo("chmod +x /home/web/runz-webz.sh")
+    with fabutils.process_erb(base_folder + "/runz-web.sh.erb", {"MONO_VERSION" : mono_version}) as f:
         put(f.name, "/home/web/runz-web.sh", use_sudo=True)
         sudo("chmod +x /home/web/runz-web.sh")
 

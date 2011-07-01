@@ -24,7 +24,7 @@ DESC=monoserver
 MONOSERVER=$(which fastcgi-mono-server4)
 MONOSERVER_PID=$(ps auxf | grep fastcgi-mono-server4.exe | grep -v grep | awk '{print $2}')
 
-WEBAPPS="/runz:/home/web/runz/web"
+WEBAPPS="/stat:/home/web/runz/web"
 
 case "$1" in
         start)
