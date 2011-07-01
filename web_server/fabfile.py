@@ -25,23 +25,41 @@ def python_env():
         sudo("./setup_virtenv.sh", user="web")
 
 def install_nginx():
-    sudo("apt-get -y install nginx")
+    sudo("echo \"deb http://ppa.launchpad.net/nginx/stable/ubuntu $(lsb_release -cs) main\" >> /etc/apt/sources.list")
+    sudo("apt-key adv --keyserver keyserver.ubuntu.com --recv-keys C300EE8C")
+    sudo("apt-get update && apt-get -y install nginx")
+
     if exists("/etc/init.d/apache2"):
         sudo("/etc/init.d/apache2 stop")
         sudo("update-rc.d apache2 disable")
     sudo("update-rc.d nginx enable")
-    put(base_folder + "/webz.nginx.conf", "/etc/nginx/sites-enabled/default", use_sudo=True)
+
+    with fabutils.process_erb(base_folder + "/webz.nginx.conf.erb", {"ROOT_DIRECTORY" : "/home/web/runz", "WEBZ_SITE_ROOT_DIRECTORY" : "/home/web/runz/webz/site"}) as f:
+        put(f.name, "/etc/nginx/sites-enabled/default", use_sudo=True)
+
     sudo("/etc/init.d/nginx restart")
     with fabutils.process_erb(base_folder + "/runz-webz.sh.erb", {}) as f:
         put(f.name, "/home/web/runz-webz.sh", use_sudo=True)
         sudo("chmod +x /home/web/runz-webz.sh")
+    with fabutils.process_erb(base_folder + "/runz-web.sh.erb", {}) as f:
+        put(f.name, "/home/web/runz-web.sh", use_sudo=True)
+        sudo("chmod +x /home/web/runz-web.sh")
+
+def generate_nginx_config(runz_output_path, output_file):
+    with fabutils.process_erb(base_folder + "/webz.nginx.conf.erb", {"ROOT_DIRECTORY" : os.path.abspath(runz_output_path), "WEBZ_SITE_ROOT_DIRECTORY" : os.path.abspath(os.path.join(runz_output_path, "webz/site"))}) as f:
+        with open(output_file, "w") as out:
+          out.writelines(f.readlines())
 
 
 def build_mono_xsp(mono_version, mono_xsp_version):
     sudo("apt-get -y install build-essential autoconf automake pkg-config  p7zip-full")
-    put(base_folder + "/bins/xsp-%s.7z" % mono_xsp_version)
+    run("wget http://ftp.novell.com/pub/mono/sources/xsp/xsp-%s.tar.bz2" % mono_xsp_version)
     run("rm -rdf xsp-%s" % mono_xsp_version)
-    run("7z x xsp-%s.7z" % mono_xsp_version)
+    run("tar xjf xsp-%s.tar.bz2" % mono_xsp_version)
     with cd("xsp-%s" % mono_xsp_version):
         run("mono-%s ./configure --prefix=/opt/mono-%s && mono-%s make" % (mono_version, mono_version, mono_version))
         sudo("make install")
+
+def install_dotnet():
+    fabutils.install_mono(mono_version)
+    build_mono_xsp(mono_version, mono_xsp_version)

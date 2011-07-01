@@ -10,7 +10,7 @@ def deploy_web(build_output):
         os.remove(WEB_ARCHIVE)
     local("7z a -r %s %s/webz" % (WEB_ARCHIVE, build_output))
     if exists("runz/webz"):
-        run("rm -rdf runz")
+        run("rm -rdf runz/web")
         
     run("mkdir -p runz/webz")
     put(WEB_ARCHIVE, "runz/")
@@ -18,13 +18,33 @@ def deploy_web(build_output):
     run("7z x -orunz runz/%s" % WEB_ARCHIVE)
     run("chmod -R 755 runz/webz")
 
+def deploy_web_status(build_output):
+    WEB_ARCHIVE = "web.7z"
+    if os.path.exists(WEB_ARCHIVE):
+        os.remove(WEB_ARCHIVE)
+    local("7z a -r %s %s/web" % (WEB_ARCHIVE, build_output))
+    if exists("runz/web"):
+        run("rm -rdf runz/web")
+
+    run("mkdir -p runz/web")
+    put(WEB_ARCHIVE, "runz/")
+
+    run("7z x -orunz runz/%s" % WEB_ARCHIVE)
+    run("chmod -R 755 runz/web")
+
 
 def start_web_server():
     run("~/runz-webz.sh start")
 
+def start_web_server_status():
+    run("~/runz-web.sh start")
+
 
 def shutdown_web_server():
     run("~/runz-webz.sh stop")
+
+def shutdown_web_server_status():
+    run("~/runz-web.sh stop")
 
 
 def deploy_agent(build_output):

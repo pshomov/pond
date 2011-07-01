@@ -4,6 +4,7 @@ import web_server.fabfile
 import repository_updater.fabfile
 import storage_server
 import fabutils
+from web_server.fabfile import generate_nginx_config
 
 def setup_agent_server():
     fabutils.base_linux_configuration()
@@ -25,6 +26,7 @@ def setup_web_server():
     web_server.fabfile.setup()
     web_server.fabfile.install_nginx()
     web_server.fabfile.python_env()
+    web_server.fabfile.install_dotnet()
 
 def setup_store_server():
     fabutils.base_linux_configuration()
