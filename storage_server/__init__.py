@@ -1,6 +1,7 @@
 import os
 from fabric.api import run, put
 from fabric.operations import sudo
+from fabric.state import env
 import fabutils
 
 RIAK_VERSION = "0.14.1-1"
@@ -27,6 +28,17 @@ def install_riak():
     sudo("update-rc.d riak defaults")
     start_riak()
     sudo("curl -s rekon.basho.com | sh")
-    
+    shutdown_riak()
+
 def start_riak():
+    env.warn_only = True
     sudo("/etc/init.d/riak start")
+    env.warn_only = False
+
+def shutdown_riak():
+    sudo("/etc/init.d/riak stop")
+
+def remove_the_ring_file_since_it_is_tight_to_the_IP_address():
+    sudo("sudo rm /var/lib/riak/ring/*")
+
+

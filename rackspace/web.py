@@ -1,6 +1,7 @@
 import time
 import rackspace.primitives
 from rackspace.primitives import create_server, select_server
+import storage_server
 
 WEB_IMAGE_NAME = "img-web"
 WEB_SERVER_NAME = "s-web"
@@ -86,3 +87,8 @@ def list_servers():
 def reconfigure_server():
     rackspace.primitives.reset_env_variable("RUNZ_RIAK_HOST", rackspace.primitives.get_store_ip())
     rackspace.primitives.reset_env_variable("RUNZ_RABBITMQ_SERVER", rackspace.primitives.get_queue_ip())
+
+def prepare_store_new_server():
+    storage_server.shutdown_riak()
+    storage_server.remove_the_ring_file_since_it_is_tight_to_the_IP_address()
+    storage_server.start_riak()
