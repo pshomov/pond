@@ -29,7 +29,7 @@ case "$1" in
         start)
                 if [ -z "${MONOSERVER_PID}" ]; then
                         echo "starting Runz repository tracker"
-                        mono-<%= @mono_ver %> mono ${MONOSERVER} &
+                        mono-<%= @mono_ver %> mono --debug ${MONOSERVER} &
                         echo "Runz repository tracker started"
                 else
                         echo "Runz repository tracker is already running"
