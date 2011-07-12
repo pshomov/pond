@@ -67,13 +67,8 @@ def rename_server(server_name, new_server_name):
     server = rackspace.servers.find(name=server_name)
     rackspace.servers.update(server, new_server_name)
 
-def get_queue_ip():
-    return rackspace.servers.find(name="s-queue").public_ip
-
-
-def get_store_ip():
-    return rackspace.servers.find(name="s-store").public_ip
-
+def find_server_ip(server_name):
+    return rackspace.servers.find(name=server_name).public_ip
 
 def set_environment_in_file(file, environment_line, variable_name):
     if not contains(file, variable_name):
