@@ -17,6 +17,7 @@ def setup():
     sudo("apt-get -y install python2.6 python-setuptools python-protobuf p7zip-full")
 
 def python_env():
+    sudo("easy_install -U psutil || { echo \"easy_install failed\"; exit 1; }")
     sudo("easy_install -U virtualenv || { echo \"easy_install failed\"; exit 1; }")
     put(base_folder + "/setup_virtenv.sh", "/home/web", use_sudo=True)
     with cd("/home/web"):

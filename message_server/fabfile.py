@@ -7,7 +7,7 @@ from fabric.operations import sudo
 import fabutils
 
 base_folder = os.path.normpath(os.path.abspath(os.path.dirname(__file__)))
-
+rabbit_mq_version = "2.5.1"
 def accounts():
     fabutils._create_account(user = "queue", passwd = "queue", public_key=base_folder+"/queue_id.pub")
 
@@ -18,17 +18,17 @@ def setup():
         sudo("apt-key add rabbitmq-signing-key-public.asc")
 
     sudo("apt-get update")
-    sudo("apt-get -y install rabbitmq-server")
+    sudo("apt-get -y install rabbitmq-server=2.5.1-1")
     _install_management_console()
 
 def _install_management_console():
-    run("wget http://www.rabbitmq.com/releases/plugins/v2.4.1/mochiweb-2.4.1.ez")
-    run("wget http://www.rabbitmq.com/releases/plugins/v2.4.1/webmachine-2.4.1.ez")
-    run("wget http://www.rabbitmq.com/releases/plugins/v2.4.1/amqp_client-2.4.1.ez")
-    run("wget http://www.rabbitmq.com/releases/plugins/v2.4.1/rabbitmq-mochiweb-2.4.1.ez")
-    run("wget http://www.rabbitmq.com/releases/plugins/v2.4.1/rabbitmq-management-agent-2.4.1.ez")
-    run("wget http://www.rabbitmq.com/releases/plugins/v2.4.1/rabbitmq-management-2.4.1.ez")
-    sudo("mv *.ez /usr/lib/rabbitmq/lib/rabbitmq_server-2.4.1/plugins/")
+    run("wget http://www.rabbitmq.com/releases/plugins/v{rabbit_mq}/mochiweb-1.3-rmq{rabbit_mq}-git9a53dbd.ez".format(rabbit_mq = rabbit_mq_version))
+    run("wget http://www.rabbitmq.com/releases/plugins/v{rabbit_mq}/webmachine-1.7.0-rmq{rabbit_mq}-hg0c4b60a.ez".format(rabbit_mq = rabbit_mq_version))
+    run("wget http://www.rabbitmq.com/releases/plugins/v{rabbit_mq}/amqp_client-{rabbit_mq}.ez".format(rabbit_mq = rabbit_mq_version))
+    run("wget http://www.rabbitmq.com/releases/plugins/v{rabbit_mq}/rabbitmq_mochiweb-{rabbit_mq}.ez".format(rabbit_mq = rabbit_mq_version))
+    run("wget http://www.rabbitmq.com/releases/plugins/v{rabbit_mq}/rabbitmq_management_agent-{rabbit_mq}.ez".format(rabbit_mq = rabbit_mq_version))
+    run("wget http://www.rabbitmq.com/releases/plugins/v{rabbit_mq}/rabbitmq_management-{rabbit_mq}.ez".format(rabbit_mq = rabbit_mq_version))
+    sudo("mv *.ez /usr/lib/rabbitmq/lib/rabbitmq_server-{rabbit_mq}/plugins/".format(rabbit_mq = rabbit_mq_version))
     sudo("/etc/init.d/rabbitmq-server restart")
         
 def start_rabbitmq_server():
