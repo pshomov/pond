@@ -20,18 +20,23 @@ def setup():
         sudo("chmod +x /home/agent/runz-agent.sh")
 
 def install_ruby_support():
-    put(base_folder+"/bins/rubygems-1.7.2.tgz")
-    run("tar -xf rubygems-1.7.2.tgz")
-    with cd("rubygems-1.7.2"):
+    put(os.path.join(base_folder,"gemrc"), "/home/agent/.gemrc")
+    run("mkdir -p /home/agent/.gem")
+    run("chown agent:agent /home/agent/.gem")
+
+    rubygems_version = "rubygems-1.8.10"
+    put(base_folder+"/bins/%s.tgz" % rubygems_version)
+    run("tar -xf %s.tgz" % rubygems_version)
+    with cd(rubygems_version):
         sudo("ruby setup.rb")
 
     fabutils._install("ruby1.8-dev ruby1.8 ri1.8 rdoc1.8 irb1.8 build-essential")
     fabutils._install("libreadline-ruby1.8 libruby1.8 libopenssl-ruby")
     fabutils._install("libxml2 libxml2-dev")
     fabutils._install("libxslt-ruby1.8 libxslt1-dev")
-    fabutils._install("rake")
-    sudo("gem1.8 install bundler rack --no-rdoc --no-ri")
-    sudo("gem1.8 install therubyracer --no-rdoc --no-ri")
+
+    sudo("gem1.8 install bundler --no-rdoc --no-ri")
+    sudo("gem1.8 install rake therubyracer --no-rdoc --no-ri")
 
 def install_python_support():
     sudo("apt-get -y install python python-dev python-pip")
@@ -40,7 +45,7 @@ def install_python_support():
 def install_dotnet():
     fabutils.install_mono(mono_version)
     install_nunit(mono_version)
-        
+
 def install_nunit(version):
     sudo("apt-get -y install realpath")
     mono_runz_addons = "/opt/mono-%s/runz" % version

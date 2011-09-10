@@ -1,0 +1,3 @@
+gemhome: /home/agent/.gem/ruby/1.8
+gempath:
+    - /usr/lib/ruby/gems/1.8
