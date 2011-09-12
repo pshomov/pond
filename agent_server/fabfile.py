@@ -15,9 +15,11 @@ def accounts():
 
 def setup():
     sudo("apt-get -y install git-core curl ruby-full p7zip-full")
+    install_python_support()
     with fabutils.process_erb(base_folder+"/runz-agent.sh.erb", {"MONO_VERSION" : mono_version}) as f:
         put(f.name, "/home/agent/runz-agent.sh", use_sudo=True)
         sudo("chmod +x /home/agent/runz-agent.sh")
+    sudo("easy_install psutil")
 
 def install_ruby_support():
     put(os.path.join(base_folder,"gemrc"), "/home/agent/.gemrc")
@@ -33,7 +35,7 @@ def install_ruby_support():
     fabutils._install("ruby1.8-dev ruby1.8 ri1.8 rdoc1.8 irb1.8 build-essential")
     fabutils._install("libreadline-ruby1.8 libruby1.8 libopenssl-ruby")
     fabutils._install("libxml2 libxml2-dev")
-    fabutils._install("libxslt-ruby1.8 libxslt1-dev")
+    fabutils._install("libxslt-ruby1.8 libxslt1-dev libsqlite3-dev")
 
     sudo("gem1.8 install bundler --no-rdoc --no-ri")
     sudo("gem1.8 install rake therubyracer --no-rdoc --no-ri")
