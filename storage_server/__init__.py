@@ -4,7 +4,7 @@ from fabric.operations import sudo
 from fabric.state import env
 import fabutils
 
-RIAK_VERSION = "0.14.1-1"
+RIAK_VERSION = "1.0.1-1"
 RIAK_ARCH = "amd64"
 
 def prepare():
