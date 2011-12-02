@@ -6,7 +6,7 @@ from fabric.contrib.files import contains,append
 from fabric.operations import sudo
 import fabutils
 
-mono_version = "2.10.2"
+mono_version = "2.10.6"
 libgdi_version = "2.10"
 base_folder = os.path.normpath(os.path.abspath(os.path.dirname(__file__)))
 

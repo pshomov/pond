@@ -46,9 +46,9 @@ def build_mono(version, libgdi_version):
     run("chmod +x compile_script.sh && ./compile_script.sh")
     _generate_mono_wrapper_script(version)
 
-    run("wget http://ftp.novell.com/pub/mono/sources/mono/mono-%s.tar.bz2" % version)
+    run("wget http://download.mono-project.com/sources/mono/mono-%s.tar.bz2" % version)
     run("tar xjf mono-%s.tar.bz2" % version)
-    run("wget http://ftp.novell.com/pub/mono/sources/libgdiplus/libgdiplus-%s.tar.bz2" % libgdi_version)
+    run("wget http://download.mono-project.com/sources/libgdiplus/libgdiplus-%s.tar.bz2" % libgdi_version)
     run("tar xjf libgdiplus-%s.tar.bz2" % libgdi_version)
 
     with cd("libgdiplus-%s" % libgdi_version):
