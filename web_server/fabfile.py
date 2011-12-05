@@ -4,7 +4,7 @@ from fabric.contrib.files import exists
 from fabric.operations import sudo
 import fabutils
 
-mono_version = "2.10.2"
+mono_version = "2.10.6"
 mono_xsp_version = "2.10.2"
 libgdi_version = "2.10"
 base_folder = os.path.normpath(os.path.abspath(os.path.dirname(__file__)))
@@ -14,7 +14,7 @@ def accounts():
 
 
 def setup():
-    sudo("apt-get -y install python2.6 python-setuptools python-protobuf p7zip-full")
+    sudo("apt-get -y install build-essential python-dev python2.6 python-setuptools python-protobuf p7zip-full")
 
 def python_env():
     sudo("easy_install -U psutil || { echo \"easy_install failed\"; exit 1; }")
@@ -53,7 +53,7 @@ def generate_nginx_config(runz_output_path, output_file):
 
 def build_mono_xsp(mono_version, mono_xsp_version):
     sudo("apt-get -y install build-essential autoconf automake pkg-config  p7zip-full")
-    run("wget http://ftp.novell.com/pub/mono/sources/xsp/xsp-%s.tar.bz2" % mono_xsp_version)
+    run("wget http://download.mono-project.com/sources/xsp/xsp-%s.tar.bz2" % mono_xsp_version)
     run("rm -rdf xsp-%s" % mono_xsp_version)
     run("tar xjf xsp-%s.tar.bz2" % mono_xsp_version)
     with cd("xsp-%s" % mono_xsp_version):

@@ -25,7 +25,7 @@ def setup_web_server():
     web_server.fabfile.accounts()
     web_server.fabfile.setup()
     web_server.fabfile.install_nginx()
-    web_server.fabfile.python_env()
+#    web_server.fabfile.python_env()
     web_server.fabfile.install_dotnet()
 
 def setup_store_server():

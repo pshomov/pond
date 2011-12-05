@@ -18,7 +18,7 @@ def accounts():
 def install_riak():
     """ installs riak storage server """
     riak_deb = "riak_%s_%s.deb" % (RIAK_VERSION, RIAK_ARCH)
-    riak_url = "http://downloads.basho.com/riak/CURRENT/%s" % riak_deb
+    riak_url = "http://downloads.basho.com/riak/riak-1.0.1/%s" % riak_deb
     run("wget %s" % riak_url)
     sudo("dpkg -i %s" % riak_deb)
     # TODO: set name of the node and IP address in config files prior to upload

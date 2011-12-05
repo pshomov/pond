@@ -7,7 +7,7 @@ from fabric.operations import sudo
 import fabutils
 
 base_folder = os.path.normpath(os.path.abspath(os.path.dirname(__file__)))
-rabbit_mq_version = "2.5.1"
+rabbit_mq_version = "2.7.0"
 def accounts():
     fabutils._create_account(user = "queue", passwd = "queue", public_key=base_folder+"/queue_id.pub")
 
@@ -18,8 +18,8 @@ def setup():
         sudo("apt-key add rabbitmq-signing-key-public.asc")
 
     sudo("apt-get update")
-    sudo("apt-get -y install rabbitmq-server=2.5.1-1")
-    _install_management_console()
+    sudo("apt-get -y install rabbitmq-server".format(rabbit_mq = rabbit_mq_version))
+    # _install_management_console()
 
 def _install_management_console():
     run("wget http://www.rabbitmq.com/releases/plugins/v{rabbit_mq}/mochiweb-1.3-rmq{rabbit_mq}-git9a53dbd.ez".format(rabbit_mq = rabbit_mq_version))
