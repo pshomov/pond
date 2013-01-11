@@ -2,10 +2,27 @@ import time
 from fabric.contrib.files import contains, append, sed
 from fabric.operations import reboot
 from novaclient.v1_1 import client
+from novaclient.v1_1.servers import Server
 import os
 import fabric.api
 
 current_server = None
+
+def get_ipv4(self, network_type):
+    for addr in self.networks[network_type]:
+        if addr.find(':') is not -1: continue
+        return addr
+    return None
+
+
+def public_ip(self):
+    return get_ipv4(self, 'public')
+
+def private_ip(self):
+    return get_ipv4(self, 'private')
+
+Server.public_ip = public_ip
+Server.private_ip = private_ip
 
 rackspace = client.Client(os.environ['OS_USERNAME'],os.environ['OS_PASSWORD'], os.environ['OS_TENANT_NAME'], os.environ['OS_AUTH_URL'], region_name=os.environ['OS_REGION_NAME'])
 
@@ -26,7 +43,7 @@ def create_server(server_name, image_name="Ubuntu 11.10 (Oneiric Oncelot)", gene
     if generate_user:
         fabric.api.env.password = rootPass
         fabric.api.env.user = 'root'
-    fabric.api.env.hosts = [server.networks['public'][0]]
+    fabric.api.env.hosts = [server.public_ip()]
 
 
 def store_server_image(image_name):
@@ -56,7 +73,7 @@ def delete_image(image_name):
 
 def select_server(server_name):
     server = rackspace.servers.find(name=server_name)
-    fabric.api.env.hosts = [server.networks['public'][0]]
+    fabric.api.env.hosts = [server.public_ip()]
     global  current_server
     current_server = server
 
@@ -65,7 +82,7 @@ def rename_server(server_name, new_server_name):
     rackspace.servers.update(server, new_server_name)
 
 def find_server_ip(server_name):
-    return rackspace.servers.find(name=server_name).networks['public'][0]
+    return rackspace.servers.find(name=server_name).public_ip()
 
 def set_environment_in_file(file, environment_line, variable_name):
     if not contains(file, variable_name):
