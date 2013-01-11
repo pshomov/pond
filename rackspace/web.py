@@ -82,7 +82,7 @@ def cleanup():
 
 def list_servers():
     for server in rackspace.primitives.all_servers():
-        print "{name} - {ip}".format(name=server.name, ip=server.public_ip)
+        print "{name} - {ip}({pip})".format(name=server.name, ip=server.networks['public'][0], pip=server.networks['private'][0])
 
 
 def reconfigure_server():

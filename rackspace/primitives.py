@@ -1,19 +1,16 @@
 import time
 from fabric.contrib.files import contains, append, sed
 from fabric.operations import reboot
-import openstack.compute
+from novaclient.v1_1 import client
 import os
 import fabric.api
 
 current_server = None
 
-def get_rackspace_manager():
-    return openstack.compute.Compute(username=os.environ["RACKSPACE_USERNAME"], apikey=os.environ["RACKSPACE_API_KEY"])
+rackspace = client.Client(os.environ['OS_USERNAME'],os.environ['OS_PASSWORD'], os.environ['OS_TENANT_NAME'], os.environ['OS_AUTH_URL'], region_name=os.environ['OS_REGION_NAME'])
 
-rackspace = get_rackspace_manager()
-
-def create_server(server_name, image_name="Ubuntu 10.10 (maverick)", generate_user=True):
-    flavour = rackspace.flavors.find(ram=256)
+def create_server(server_name, image_name="Ubuntu 11.10 (Oneiric Oncelot)", generate_user=True):
+    flavour = rackspace.flavors.find(ram=512)
     images = rackspace.images.find(name=image_name)
     server = rackspace.servers.create(server_name, images, flavour)
     global current_server
@@ -29,7 +26,7 @@ def create_server(server_name, image_name="Ubuntu 10.10 (maverick)", generate_us
     if generate_user:
         fabric.api.env.password = rootPass
         fabric.api.env.user = 'root'
-    fabric.api.env.hosts = [server.public_ip]
+    fabric.api.env.hosts = [server.networks['public'][0]]
 
 
 def store_server_image(image_name):
@@ -59,7 +56,7 @@ def delete_image(image_name):
 
 def select_server(server_name):
     server = rackspace.servers.find(name=server_name)
-    fabric.api.env.hosts = [server.public_ip]
+    fabric.api.env.hosts = [server.networks['public'][0]]
     global  current_server
     current_server = server
 
@@ -68,7 +65,7 @@ def rename_server(server_name, new_server_name):
     rackspace.servers.update(server, new_server_name)
 
 def find_server_ip(server_name):
-    return rackspace.servers.find(name=server_name).public_ip
+    return rackspace.servers.find(name=server_name).networks['public'][0]
 
 def set_environment_in_file(file, environment_line, variable_name):
     if not contains(file, variable_name):
