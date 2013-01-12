@@ -95,13 +95,13 @@ def prepare_store_new_server():
     storage_server.start_riak()
 
 def get_queue_ip():
-    return find_server_ip("s-queue")
+    return find_server_ip(QUEUE_SERVER_NAME)
 
 def get_store_ip():
-    return find_server_ip("s-store")
+    return find_server_ip(STORE_SERVER_NAME)
 
 def get_web_ip():
-    return find_server_ip("s-web")
+    return find_server_ip(WEB_SERVER_NAME)
 
 def view_queue_mgmt():
     os.system("open http://{server}:55672/mgmt".format(server = get_queue_ip()))
