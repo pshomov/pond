@@ -7,7 +7,7 @@ from fabric.operations import sudo
 import fabutils
 
 base_folder = os.path.normpath(os.path.abspath(os.path.dirname(__file__)))
-rabbit_mq_version = "2.7.0"
+rabbit_mq_version = "3.0.1"
 def accounts():
     fabutils._create_account(user = "queue", passwd = "queue", public_key=base_folder+"/queue_id.pub")
 

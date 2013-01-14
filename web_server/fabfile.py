@@ -4,9 +4,9 @@ from fabric.contrib.files import exists
 from fabric.operations import sudo
 import fabutils
 
-mono_version = "2.10.6"
+mono_version = "3.0.3"
 mono_xsp_version = "2.10.2"
-libgdi_version = "2.10"
+libgdi_version = "2.10.9"
 base_folder = os.path.normpath(os.path.abspath(os.path.dirname(__file__)))
 
 def accounts():
@@ -14,7 +14,7 @@ def accounts():
 
 
 def setup():
-    sudo("apt-get -y install build-essential python-dev python2.6 python-setuptools python-protobuf p7zip-full")
+    sudo("apt-get -y install p7zip-full")
 
 def python_env():
     sudo("easy_install -U psutil || { echo \"easy_install failed\"; exit 1; }")

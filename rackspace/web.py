@@ -108,8 +108,8 @@ def view_queue_mgmt():
 
 def view_web():
     web_ip = get_web_ip()
-    os.system("open http://{server}:8000/register/index.html".format(server = web_ip))
-    os.system("open http://{server}:8000/stat/project/github/jasondentler/cqrs/status".format(server = web_ip))
+    os.system("open http://{server}:8080/stat/content/register.html".format(server = web_ip))
+    os.system("open http://{server}:8080/stat/project/github/jasondentler/cqrs/status".format(server = web_ip))
 
 def view_store_mgmt():
     os.system("open http://{server}:8098/riak/rekon/go#/buckets/projects".format(server = get_store_ip()))

@@ -21,8 +21,8 @@ PATH=/opt/mono-<%= @mono_ver %>/frog/bin:/opt/mono-<%= @mono_ver %>/bin:/usr/loc
 NAME=monoserver
 DESC=monoserver
 
-MONOSERVER=$(which fastcgi-mono-server4)
-MONOSERVER_PID=$(ps auxf | grep fastcgi-mono-server4.exe | grep -v grep | awk '{print $2}')
+MONOSERVER=$(which xsp4)
+MONOSERVER_PID=$(ps auxf | grep xsp4.exe | grep -v grep | awk '{print $2}')
 
 WEBAPPS="/stat:/home/web/runz/web"
 
@@ -30,7 +30,7 @@ case "$1" in
         start)
                 if [ -z "${MONOSERVER_PID}" ]; then
                         echo "starting mono server"
-                        ${MONOSERVER} /applications=${WEBAPPS} /socket=tcp:127.0.0.1:9000 &
+                        MONO_OPTIONS="--debug " ${MONOSERVER} --applications ${WEBAPPS} --nonstop &
                         echo "mono server started"
                 else
                         echo ${WEBAPPS}

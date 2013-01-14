@@ -6,8 +6,8 @@ from fabric.contrib.files import contains,append
 from fabric.operations import sudo
 import fabutils
 
-mono_version = "2.10.6"
-libgdi_version = "2.10"
+mono_version = "3.0.3"
+libgdi_version = "2.10.9"
 base_folder = os.path.normpath(os.path.abspath(os.path.dirname(__file__)))
 
 def accounts():
