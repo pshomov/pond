@@ -19,6 +19,8 @@ def setup():
 
     sudo("apt-get update")
     sudo("apt-get -y install rabbitmq-server".format(rabbit_mq = rabbit_mq_version))
+    sudo("rabbitmq-plugins enable rabbitmq_management")
+    sudo("/etc/init.d/rabbitmq-server restart")
     # _install_management_console()
 
 def _install_management_console():
