@@ -14,6 +14,8 @@ TEMP_SERVER = "temp-server"
 AGENT_SERVER_NAME = "s-agent"
 AGENT_IMAGE_NAME = "img-agent"
 REPOTRACKER_SERVER_NAME = "s-repotracker"
+ONE_SERVER_NAME = "s-runz"
+ONE_IMAGE_NAME = "s-runz"
 REPOTRACKER_IMAGE_NAME = "img-repotracker"
 
 def store_web_image():
@@ -76,6 +78,10 @@ def rename_as_repotracker_server(server_name):
     rackspace.primitives.rename_server(server_name, REPOTRACKER_SERVER_NAME)
 
 
+def rename_as_one_server(server_name):
+    rackspace.primitives.rename_server(server_name, ONE_SERVER_NAME)
+
+
 def cleanup():
     rackspace.primitives.delete_server(TEMP_SERVER)
 
@@ -88,6 +94,10 @@ def list_servers():
 def reconfigure_server():
     rackspace.primitives.reset_env_variable("RUNZ_RIAK_HOST", get_store_ip())
     rackspace.primitives.reset_env_variable("RUNZ_RABBITMQ_SERVER", get_queue_ip())
+
+def reconfigure_single_server():
+    rackspace.primitives.reset_env_variable("RUNZ_RIAK_HOST","127.0.0.1")
+    rackspace.primitives.reset_env_variable("RUNZ_RABBITMQ_SERVER", "127.0.0.1")
 
 def prepare_store_new_server():
     storage_server.shutdown_riak()
