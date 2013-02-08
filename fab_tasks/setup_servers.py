@@ -1,5 +1,6 @@
 import agent_server.fabfile
 import message_server.fabfile
+import projections.fabfile
 import web_server.fabfile
 import repository_updater.fabfile
 import storage_server
@@ -19,6 +20,12 @@ def setup_repotracker_server():
     repository_updater.fabfile.accounts()
     repository_updater.fabfile.setup()
     repository_updater.fabfile.install_dotnet()
+
+def setup_projections_server():
+    fabutils.base_linux_configuration()
+    projections.fabfile.accounts()
+    projections.fabfile.setup()
+    projections.fabfile.install_dotnet()
 
 def setup_web_server():
     fabutils.base_linux_configuration()

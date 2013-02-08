@@ -1,0 +1,48 @@
+#!/bin/sh
+
+### BEGIN INIT INFO
+# Provides:          monoserve.sh
+# Required-Start:    $local_fs $syslog $remote_fs
+# Required-Stop:     $local_fs $syslog $remote_fs
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: Start fastcgi mono server with hosts
+### END INIT INFO
+<% @mono_ver =  ENV['MONO_VERSION']%>
+MONO_PREFIX=/opt/mono-<%= @mono_ver %>
+export DYLD_LIBRARY_PATH=$MONO_PREFIX/lib:$DYLD_LIBRARY_PATH
+export LD_LIBRARY_PATH=$MONO_PREFIX/lib:$LD_LIBRARY_PATH
+export C_INCLUDE_PATH=$MONO_PREFIX/include
+export ACLOCAL_PATH=$MONO_PREFIX/share/aclocal
+export PKG_CONFIG_PATH=$MONO_PREFIX/lib/pkgconfig
+export MONO_IOMAP=case
+
+PATH=/opt/mono-<%= @mono_ver %>/runz/bin:/opt/mono-<%= @mono_ver %>/bin:/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
+NAME=runz-projections
+DESC=runz-projections
+
+MONOSERVER=/home/projections/runz/projections/SaaS.Engine.exe
+MONOSERVER_PID=$(ps auxf | grep SaaS.Engine.exe | grep -v grep | awk '{print $2}')
+
+
+case "$1" in
+        start)
+                if [ -z "${MONOSERVER_PID}" ]; then
+                        echo "starting Runz projections"
+                        mono-<%= @mono_ver %> mono --debug ${MONOSERVER} &
+                        echo "Runz projections started"
+                else
+                        echo "Runz projections is already running"
+                fi
+        ;;
+        stop)
+                if [ -n "${MONOSERVER_PID}" ]; then
+                        kill ${MONOSERVER_PID}
+                        echo "Runz projections stopped"
+                else
+                        echo "Runz projections is not running"
+                fi
+        ;;
+esac
+
+exit 0

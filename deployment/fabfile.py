@@ -91,3 +91,24 @@ def start_repotracker_server():
 def shutdown_repotracker_server():
     run("~/runz-repo-tracker.sh stop")
 
+def deploy_projections(build_output):
+    PROJECTIONS_ARCHIVE = "projections.7z"
+    if os.path.exists(PROJECTIONS_ARCHIVE):
+        os.remove(PROJECTIONS_ARCHIVE)
+    local("7z a -r %s %s/projections" % (PROJECTIONS_ARCHIVE, build_output))
+    if exists("runz/projections"):
+        run("rm -rdf runz/projections")
+
+    run("mkdir -p runz/projections")
+    put(PROJECTIONS_ARCHIVE, "runz/")
+
+    run("7z x -orunz runz/%s" % PROJECTIONS_ARCHIVE)
+    run("chmod -R 755 runz/projections")
+
+def start_projections_server():
+    fabutils._run_background_process("~/runz-projections.sh start", "projections")
+
+
+def shutdown_projections_server():
+    run("~/runz-projections.sh stop")
+
